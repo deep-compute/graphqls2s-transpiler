@@ -1,0 +1,27 @@
+{
+  "name": "graphqls2s-transpiler",
+  "version": "1.0.0",
+  "description": "Transpiles from GraphS2S format to standard GraphQL SDL",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "graphqls2s-transpiler": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deep-compute/graphqls2s-transpiler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deep-compute/graphqls2s-transpiler/issues"
+  },
+  "homepage": "https://github.com/deep-compute/graphqls2s-transpiler#readme",
+  "dependencies": {
+    "graphql-s2s": "^0.20.0",
+    "meow": "^5.0.0",
+    "minimist": "^1.2.0"
+  }
+}
