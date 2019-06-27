@@ -38,6 +38,7 @@ const outputSchema = (data)=>{
     console.log(data);
     return;
   }
+  // writing the output to a file
   fs.writeFile(outputFile, data, function(err) {
     if(err) {
       console.error(err);
@@ -47,13 +48,29 @@ const outputSchema = (data)=>{
 };
 
 inputFile = args.flags.file;
+if(!Array.isArray(inputFile)){
+  inputFile = [inputFile];
+}
+
 if(!inputFile){
   console.log("Please check the help to provide right parameters");
   console.log(args.help);
   return;
 }
 
-fs.readFile(inputFile, "utf8", function(err, contents){
-  checkForError(err);
-  outputSchema(contents);
+let promisses = [];
+inputFile.forEach((file)=>{
+  // Using promises so that we can wait for all the files being read
+  promisses.push(new Promise((resolve, reject)=>{
+    fs.readFile(file, "utf8", function(err, contents){
+      checkForError(err);
+	  resolve(contents);
+    });
+  }));
+});
+
+// waiting for all the files being read
+Promise.all(promisses).then((...args)=>{
+	console.log(args[0]);
+	outputSchema(args[0].join("\n"));
 });
