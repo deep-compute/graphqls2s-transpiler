@@ -46,14 +46,29 @@ const outputSchema = (data)=>{
   });
 };
 
-inputFile = args.flags.file;
+inputFilesString = args.flags.file;
+
 if(!inputFile){
   console.log("Please check the help to provide right parameters");
   console.log(args.help);
   return;
 }
 
-fs.readFile(inputFile, "utf8", function(err, contents){
-  checkForError(err);
-  outputSchema(contents);
+const inputFiles = inputFilesString.split(",");
+
+const allPromises = inputFiles.map(file => {
+  return new Promise((resolve, reject) => {
+      fs.readFile(file, "utf8", function(err, contents){
+      if(err) {
+        checkForError(err);
+        reject(err);
+      }
+      resolve(contents);
+    });
+  });
+});
+
+Promise.all(allPromises).then(allData => {
+  let allContent = allDatai.join('\n');
+  outputSchema(allContent);
 });
