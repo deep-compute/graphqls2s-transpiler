@@ -1,9 +1,12 @@
 #!/usr/bin/env node
-const { transpileSchema } = require('graphql-s2s').graphqls2s;
+/*jshint esversion: 6 */
+
+const { transpileSchema } = require("graphql-s2s").graphqls2s;
 //const { makeExecutableSchema } = require('graphql-tools');
-const minimist = require('minimist');
-const meow = require('meow');
-const fs = require('fs');
+const minimist = require("minimist");
+const meow = require("meow");
+const fs = require("fs");
+const path = require("path");
 
 const args = meow(`
   Usage
@@ -52,25 +55,56 @@ if(!Array.isArray(inputFile)){
   inputFile = [inputFile];
 }
 
-if(!inputFile){
-  console.log("Please check the help to provide right parameters");
-  console.log(args.help);
-  return;
+let inputFiles = [];
+let inputPromises = [];
+
+function checkForDirectories(){
+  // Iterating over inputFiles to check if any of them are directories
+  inputFile.forEach((file_path)=>{
+    if(!fs.statSync(file_path).isDirectory()){
+      inputFiles.push(file_path);
+    return;
+    }
+    inputPromises.push(new Promise((resolve, reject)=>{
+      fs.readdir(file_path, (error, files)=>{
+        checkForError(error);
+        files.forEach((file_name)=>{
+        if(!file_name.endsWith(".graphql")){
+          return;
+        }
+        file_name = path.join(file_path, file_name);
+        console.log(typeof file_name);
+        inputFiles.push(file_name);
+        resolve();
+        });
+      });
+    }));
+  });
 }
 
-let promisses = [];
-inputFile.forEach((file)=>{
-  // Using promises so that we can wait for all the files being read
-  promisses.push(new Promise((resolve, reject)=>{
-    fs.readFile(file, "utf8", function(err, contents){
-      checkForError(err);
-	  resolve(contents);
-    });
-  }));
-});
+checkForDirectories();
 
-// waiting for all the files being read
-Promise.all(promisses).then((...args)=>{
-	console.log(args[0]);
-	outputSchema(args[0].join("\n"));
+Promise.all(inputPromises).then(()=>{
+
+  if(!inputFiles){
+    console.log("Please check the help to provide right parameters");
+    console.log(args.help);
+    return;
+  }
+
+  let promisses = [];
+  inputFiles.forEach((file)=>{
+    // Using promises so that we can wait for all the files being read
+    promisses.push(new Promise((resolve, reject)=>{
+      fs.readFile(file, "utf8", function(err, contents){
+        checkForError(err);
+        resolve(contents);
+      });
+    }));
+  });
+
+  // waiting for all the files being read
+  Promise.all(promisses).then((...args)=>{
+    outputSchema(args[0].join("\n"));
+  });
 });
