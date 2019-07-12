@@ -43,17 +43,22 @@ const outputSchema = (data)=>{
   }
   // writing the output to a file
   fs.writeFile(outputFile, data, function(err) {
-    if(err) {
-      console.error(err);
-      process.exit();
-    }
+    checkForError(err);
   });
 };
 
 inputFile = args.flags.file;
+
+if(!inputFile || inputFile.length === 0){
+  console.log("Please check the help to provide right parameters");
+  console.log(args.help);
+  process.exit();
+}
+
 if(!Array.isArray(inputFile)){
   inputFile = [inputFile];
 }
+
 
 let inputFiles = [];
 let inputPromises = [];
