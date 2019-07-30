@@ -1,11 +1,13 @@
-language: node_js
-node_js:
-- 10.7.0
 deploy:
   provider: npm
   email: jaswanth_dbz1992@yahoo.com
   api_key:
     secure: zTVdECiNv1rHdVD7wZg55L2zybFHmrnXF6llU+rgkC89GZoG6hoaQA6fZ1pKNYxcfWEEuCawjfsrWx24Dc33CD4oEq7JX3KORHvHETZIKYmH7vO0ZPZJt5x3viThn0kl5tkhlQe/r3pHX0Kap5CQNV62Ew/H9rzMqhk1tf+7a1nwmO3Q1nQP3xkO7re5mACkTGsZ852IE9xvp+RIc9ceP+4R4VrwDNVG4lv/aDM0HOyyCNZaP3iu+0hLbvcZHtLJ4gVNOPQ9XbdYsDbu6xoV813FjoIINKG6zoHQGd670lsOnt+v5LBAiZu5mRdmsT4udikvC/ZohkwV7+Yaamen1g94+HffXKVIqRkUnSN2TjSS2h9NYTkAwd0YBhhIgA2lM/vdDZvDUIHYoi1iGDPRaWaiRbrESZwfMBbyP0NHXH6MBHU6xhfY526HpYg1R9UUSSc1cNE7cf+/e7KXT4ppq4i3Lyg9yWXuSUl9J3oUvzxoe4RdMINT053Z1mc8OmPy22HrNbmy12Jt5WXfZ+2aLrdIEO0P66xuFHny2LV9icNRa5VOaeC4z0ypKVrP3xRo/9iDNJ/Un6ENw+17FIaCNBPYfNOpYI4ueJakQtJJGcUia6dWxQyOj4hZbfQ/9umBgsV8+qUcx2PTcSWHINWtMznUnmS1xn9gQ62DXYLruSc=
-  on:
-    tags: true
+  true:
     repo: deep-compute/graphqls2s-transpiler
+    tags: true
+language:
+- python
+- node_js
+node_js:
+- 10.7.0
